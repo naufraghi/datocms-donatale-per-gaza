@@ -1,12 +1,80 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Come Donare">
-  <h1>Come Donare</h1>
-  <p>Instructions on how to donate will go here.</p>
-</Layout>
+  <section class="max-w-2xl mx-auto p-4 md:p-8">
+    <h1 class="text-4xl font-bold text-center mb-8">Come Donare</h1>
 
-<script>
-  import Layout from '../layouts/Layout.astro';
-</script>
+    <div class="space-y-8">
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4 text-blue-700">Tramite PayPal</h2>
+        <p class="text-gray-700 mb-4">
+          Puoi effettuare una donazione in modo rapido e sicuro tramite PayPal.
+          Clicca sul link qui sotto per accedere alla nostra pagina PayPal.me:
+        </p>
+        <p class="text-center">
+          <a
+            href="https://www.paypal.me/donatale"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+          >
+            Dona con PayPal
+          </a>
+        </p>
+        <p class="text-gray-500 text-sm mt-4">
+          Assicurati di selezionare l'opzione "Invia denaro a un amico o familiare"
+          per evitare commissioni, se disponibile e appropriato.
+        </p>
+      </article>
+
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4 text-purple-700">Tramite Satispay</h2>
+        <p class="text-gray-700 mb-4">
+          Se utilizzi Satispay, puoi inviarci una donazione direttamente tramite l'app.
+          Cerca il nostro profilo o scansiona il QR Code qui sotto:
+        </p>
+        <div class="flex justify-center my-4">
+          <!-- Placeholder for QR Code image -->
+          <img
+            src="/qr-code-satispay-placeholder.png"
+            alt="QR Code Satispay"
+            class="w-48 h-48 border border-gray-300 rounded-lg"
+          />
+        </div>
+        <p class="text-center text-gray-700">
+          Nome utente Satispay: <span class="font-semibold">@Donatale</span>
+        </p>
+        <p class="text-gray-500 text-sm mt-4">
+          Assicurati di avere l'app Satispay installata e configurata sul tuo smartphone.
+        </p>
+      </article>
+
+      <article class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-4 text-green-700">Tramite Bonifico Bancario</h2>
+        <p class="text-gray-700 mb-4">
+          Puoi anche scegliere di effettuare un bonifico bancario. Trovi i nostri
+          dati qui di seguito:
+        </p>
+        <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
+          <p class="mb-2">
+            <span class="font-semibold">Banca:</span> [Nome della Tua Banca]
+          </p>
+          <p class="mb-2">
+            <span class="font-semibold">Intestatario:</span> [Nome/Ragione Sociale del Beneficiario]
+          </p>
+          <p class="mb-2">
+            <span class="font-semibold">IBAN:</span> <code class="font-mono bg-gray-200 p-1 rounded">ITXX YYYY ZZZZ WWWW AAAA BBBB CCCC</code>
+          </p>
+          <p>
+            <span class="font-semibold">Causale:</span> Donazione Donatale - [Il tuo nome/anonimo]
+          </p>
+        </div>
+        <p class="text-gray-500 text-sm mt-4">
+          Ti preghiamo di inserire la causale indicata per aiutarci a tracciare la tua donazione.
+        </p>
+      </article>
+    </div>
+  </section>
+</Layout>

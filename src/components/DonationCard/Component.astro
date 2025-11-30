@@ -1,5 +1,42 @@
 ---
+interface Props {
+  item: {
+    id: string;
+    title: string;
+    personName: string;
+    description: string;
+    image: {
+      url: string;
+    };
+    donated: boolean;
+  };
+}
 
+const { item } = Astro.props;
 ---
 
-<div>Donation Card Component</div>
+<div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+  {item.image && (
+    <img
+      src={item.image.url}
+      alt={item.title}
+      class="w-full h-48 object-cover"
+    />
+  )}
+  <div class="p-4 flex-grow flex flex-col">
+    <h2 class="text-xl font-semibold mb-2">{item.title}</h2>
+    <p class="text-gray-600 text-sm mb-2">per {item.personName}</p>
+    <p class="text-gray-800 mb-4 flex-grow">{item.description}</p>
+    <div class="mt-auto">
+      {item.donated ? (
+        <span class="inline-block bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full">
+          Donato
+        </span>
+      ) : (
+        <span class="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded-full">
+          Disponibile
+        </span>
+      )}
+    </div>
+  </div>
+</div>
