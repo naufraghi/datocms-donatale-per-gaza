@@ -7,20 +7,23 @@ import { AllDonationItemsQuery } from '~/lib/datocms/queries/AllDonationItemsQue
 import DonationCard from '~/components/DonationCard/Component.astro';
 
 const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
-const { allDonationitems } = await executeQuery(AllDonationItemsQuery, { includeDrafts: draftModeEnabled });
-
+const { allDonationitems } = await executeQuery(AllDonationItemsQuery, {
+  includeDrafts: draftModeEnabled,
+});
 ---
 
 <Layout title="Donatale">
   <h1 class="text-4xl font-bold text-center my-8">Donazioni Disponibili</h1>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-    {allDonationitems.length === 0 ? (
-      <p class="col-span-full text-center text-lg">Nessun oggetto disponibile per la donazione al momento. Torna presto!</p>
-    ) : (
-      allDonationitems.map((item) => (
-        <DonationCard item={item} />
-      ))
-    )}
+    {
+      allDonationitems.length === 0 ? (
+        <p class="col-span-full text-center text-lg">
+          Nessun oggetto disponibile per la donazione al momento. Torna presto!
+        </p>
+      ) : (
+        allDonationitems.map((item) => <DonationCard item={item} />)
+      )
+    }
   </div>
   <DraftModeQueryListener query={AllDonationItemsQuery} />
 </Layout>
