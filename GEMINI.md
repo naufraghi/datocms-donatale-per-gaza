@@ -7,11 +7,11 @@ This document outlines the plan for creating the Donatale website, a platform fo
 - **Project Name**: Donatale
 - **Objective**: Create a static website in Italian to showcase symbolic donation items (e.g., "a pullover for Mary"). The site will guide users on how to donate through external methods like PayPal, Satispay, or bank transfer, avoiding direct payment processing and fees.
 - **Key Technologies**:
-    - **CMS**: DatoCMS (for managing content like families, people, and donation items).
-    - **Frontend Framework**: Astro with TypeScript.
-    - **Package Manager**: npm (managed by nvm).
-    - **Styling**: Tailwind CSS.
-    - **Deployment**: Netlify.
+  - **CMS**: DatoCMS (for managing content like families, people, and donation items).
+  - **Frontend Framework**: Astro with TypeScript.
+  - **Package Manager**: npm (managed by nvm).
+  - **Styling**: Tailwind CSS.
+  - **Deployment**: Netlify.
 
 ## Development Environment
 
@@ -22,9 +22,9 @@ This project uses `nvm` (Node Version Manager) to manage the Node.js version. Th
 - **Homepage**: Display a grid or list of available "donation items". Each item will be visually represented and will show the person it's for.
 - **Item Pages**: (Optional, can be a modal) A detailed view for each item, perhaps with a short story or context.
 - **Donation Instructions Page**: A clear, simple page explaining how to donate using:
-    - PayPal (e.g., PayPal.me link)
-    - Satispay (e.g., QR Code and details)
-    - Bank Transfer (IBAN and recipient details)
+  - PayPal (e.g., PayPal.me link)
+  - Satispay (e.g., QR Code and details)
+  - Bank Transfer (IBAN and recipient details)
 - **Content Management**: All content will be managed through a DatoCMS backend, allowing for easy updates without touching the code.
 - **Responsive Design**: The website will be fully responsive and accessible on both desktop and mobile devices.
 - **Language**: The entire frontend will be in Italian.
@@ -41,10 +41,8 @@ I will implement the project in the following phases:
 
 ### Phase 2: DatoCMS Integration
 
-1.  **Model Definition**: I will assume the following models need to be created in your DatoCMS project:
-    - **`Family`**: Represents a family unit.
-    - **`Person`**: Belongs to a family, has a name (e.g., "Mary").
-    - **`DonationItem`**: The symbolic item for donation (e.g., "Pullover"). It will have a title, a description, and a relation to a `Person`.
+1.  **Model Definition**: We are using a simplified schema with a single model:
+    - **`DonationItem`**: This model holds all the information for a donation. It should have fields like `title` (text), `person_name` (text), `description` (text), `image` (image), and `donated` (boolean).
 2.  **API Client**: Create a client to connect to the DatoCMS GraphQL API and fetch the required data. This will require a read-only API token from you.
 
 ### Phase 3: Frontend Development
