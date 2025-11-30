@@ -3,7 +3,7 @@ import { SECRET_API_TOKEN } from 'astro:env/server';
 import { recordToWebsiteRoute } from '~/lib/datocms/recordInfo';
 import { handleUnexpectedError, invalidRequestResponse, json, withCORS } from '../utils';
 
-export const OPTIONS: APIRoute = ({ request }) => {
+export const OPTIONS: APIRoute = () => {
   return new Response('OK', withCORS());
 };
 
@@ -39,10 +39,10 @@ export const POST: APIRoute = async ({ url, request }) => {
      * along with information about which locale they are currently viewing in
      * the interface
      */
-    const { item, itemType, locale } = await request.json();
+    const { item, itemType } = await request.json();
 
     // We can use this info to generate the frontend URL associated
-    const recordUrl = await recordToWebsiteRoute(item, itemType.attributes.api_key, locale);
+    const recordUrl = await recordToWebsiteRoute(item, itemType.attributes.api_key);
 
     const response: WebPreviewsResponse = { previewLinks: [] };
 

@@ -6,7 +6,7 @@ import { recordToSlug, recordToWebsiteRoute } from '~/lib/datocms/recordInfo';
 import { draftModeHeaders } from '~/lib/draftMode';
 import { handleUnexpectedError, invalidRequestResponse, json, withCORS } from '../utils';
 
-export const OPTIONS: APIRoute = ({ request }) => {
+export const OPTIONS: APIRoute = () => {
   return new Response('OK', withCORS());
 };
 
@@ -59,9 +59,9 @@ export const GET: APIRoute = async ({ url }) => {
     const { data: item } = await client.items.rawFind(itemId);
 
     // We can use this info to generate the frontend URL, and the page slug
-    const websitePath = await recordToWebsiteRoute(item, itemTypeApiKey, locale);
+    const websitePath = await recordToWebsiteRoute(item, itemTypeApiKey);
 
-    const slug = await recordToSlug(item, itemTypeApiKey, locale);
+    const slug = await recordToSlug(item, itemTypeApiKey);
 
     if (!websitePath) {
       return invalidRequestResponse(
