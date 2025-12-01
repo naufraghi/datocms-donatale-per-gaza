@@ -9,11 +9,11 @@ import DonationModal from '~/components/DonationModal/Component.astro'; // Impor
 import type { DonationItem } from '~/lib/types';
 
 const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
-const { allDonationitems } = await executeQuery(AllDonationItemsQuery, {
+const { allDonationItems } = await executeQuery(AllDonationItemsQuery, {
   includeDrafts: draftModeEnabled,
 });
 
-const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[];
+const typedAllDonationItems: DonationItem[] = allDonationItems as DonationItem[];
 ---
 
 <Layout title="Donatale">
@@ -23,12 +23,12 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4"
   >
     {
-      typedAllDonationitems.length === 0 ? (
+      typedAllDonationItems.length === 0 ? (
         <p class="col-span-full text-center text-lg">
           Nessun oggetto disponibile per la donazione al momento. Torna presto!
         </p>
       ) : (
-        typedAllDonationitems.map((item) => <DonationCard item={item} />)
+        typedAllDonationItems.map((item) => <DonationCard item={item} />)
       )
     }
   </div>
@@ -41,8 +41,17 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
   const donationModal = document.getElementById('donation-modal');
   const donationCardsContainer = document.getElementById('donation-cards-container');
   const donationForm = document.getElementById('donation-form');
+  const modalCloseButton = document.getElementById('modal-close-button'); // Get the close button
 
-  if (donationCardsContainer && donationModal && donationForm) {
+  // Helper to safely set an HTMLInputElement value
+  function setInputElementValue(id, value) {
+    const element = document.getElementById(id);
+    if (element instanceof HTMLInputElement) {
+      element.value = value;
+    }
+  }
+
+  if (donationCardsContainer && donationModal && donationForm && modalCloseButton) {
     // Function to populate and show the modal
     function showDonationModal(itemData) {
       if (!donationModal) return;
@@ -51,9 +60,9 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
       document.getElementById('modal-item-title').textContent = itemData.title;
       document.getElementById('modal-item-description').textContent = itemData.description;
       document.getElementById('modal-donation-code').textContent = itemData.donationCode;
-
+      
       const modalImage = document.getElementById('modal-item-image');
-      if (itemData.imageUrl && modalImage) {
+      if (itemData.imageUrl && modalImage instanceof HTMLImageElement) {
         modalImage.src = itemData.imageUrl;
         modalImage.classList.remove('hidden');
       } else if (modalImage) {
@@ -61,13 +70,13 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
       }
 
       // Populate hidden form fields
-      document.getElementById('form-item-id').value = itemData.id;
-      document.getElementById('form-donation-code').value = itemData.donationCode;
+      setInputElementValue('form-item-id', itemData.id);
+      setInputElementValue('form-donation-code', itemData.donationCode);
 
       // Reset donor specific fields
-      document.getElementById('donorName').value = '';
-      document.getElementById('donorEmail').value = '';
-      document.getElementById('donatedBy').value = '';
+      setInputElementValue('donorName', '');
+      setInputElementValue('donorEmail', '');
+      setInputElementValue('donatedBy', '');
 
       donationModal.showModal();
     }
@@ -79,7 +88,7 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
         const itemData = {
           id: targetButton.dataset.itemId || '',
           title: targetButton.dataset.itemTitle || '',
-          personName: targetButton.dataset.itemPersonName || '', // Not used in modal but good to keep structure
+          personName: targetButton.dataset.itemPersonName || '',
           description: targetButton.dataset.itemDescription || '',
           imageUrl: targetButton.dataset.itemImageUrl || '',
           donationCode: targetButton.dataset.donationCode || '',
@@ -88,10 +97,21 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
       }
     });
 
+    // Event listener for closing the modal using the 'X' button
+    modalCloseButton.addEventListener('click', () => {
+      donationModal.close();
+    });
+
     // Handle form submission (will call backend API)
     donationForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const form = event.target;
+      const form = event.target; // event.target will be the form element
+
+      if (!(form instanceof HTMLFormElement)) {
+        console.error('Event target is not an HTMLFormElement.');
+        return;
+      }
+
       const formData = new FormData(form);
 
       const donorName = String(formData.get('donorName'));
@@ -114,22 +134,34 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
 
       console.log('Form submitted:', submissionData);
 
-      // Placeholder for backend API call (Task 5)
-      // const response = await fetch('/api/donate', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(submissionData),
-      // });
-      // const result = await response.json();
-      // console.log('API response:', result);
+      // Backend API call
+      try {
+        const response = await fetch('/api/donate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData),
+        });
 
-      donationModal.close();
-      alert('Grazie per la tua donazione! Attendiamo la conferma.'); // Placeholder for actual feedback
+        const result = await response.json();
+
+        if (response.ok) {
+          console.log('API response:', result);
+          donationModal.close();
+          alert('Grazie per la tua donazione! Abbiamo registrato la tua intenzione e riceverai presto una email di conferma.');
+          window.location.reload();
+        } else {
+          console.error('API error:', result);
+          alert(`Errore nella donazione: ${result.message || 'Si è verificato un errore.'}`);
+        }
+      } catch (error) {
+        console.error('Network or unexpected error:', error);
+        alert('Si è verificato un errore inaspettato. Riprova più tardi.');
+      }
     });
 
-    // Close modal when clicking outside
+    // Close modal when clicking outside (native <dialog> behavior)
     donationModal.addEventListener('click', (event) => {
       if (event.target === donationModal) {
         donationModal.close();

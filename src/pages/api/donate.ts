@@ -23,6 +23,11 @@ export const POST: APIRoute = async ({ request }) => {
     // 1. Fetch the DonationItem to check its status and version for optimistic locking
     const item = (await client.items.find(itemId)) as any; // Cast item to any temporarily
 
+    if (item.attributes.donation) {
+      // Item is already donated, return an error
+      return invalidRequestResponse('Donation item already donated or in progress', 409);
+    }
+
     // Find DonationEvent model ID dynamically
     const itemTypes = await client.itemTypes.list();
     const donationEventModel = itemTypes.find(
@@ -36,13 +41,13 @@ export const POST: APIRoute = async ({ request }) => {
       donor_name: donorName,
       donor_email: donorEmail,
       donated_by: donatedBy,
-      donation_item: itemId, // Link to the DonationItem
+      donation: itemId, // Link to the DonationItem, assuming API ID is 'donation'
     });
 
     // 3. Update the DonationItem
     // Mark as donated and link to the new DonationEvent
     await client.items.update(itemId, {
-      donation_event: donationEvent.id, // Assuming API ID for link field is 'donation_event'
+      donation: donationEvent.id, // Assuming API ID for link field is 'donation'
       // _version: item._version, // Use optimistic locking if DatoCMS supports it easily or if needed
     });
 

@@ -78,7 +78,7 @@ scalar CustomData
 """A ISO 8601 compliant datetime value"""
 scalar DateTime
 
-input DonationeventModelFilter {
+input DonationEventModelFilter {
   _createdAt: CreatedAtFilter
   id: ItemIdFilter
   _firstPublishedAt: PublishedAtFilter
@@ -91,11 +91,11 @@ input DonationeventModelFilter {
   donatedBy: StringFilter
   donorEmail: StringFilter
   donorName: StringFilter
-  OR: [DonationeventModelFilter]
-  AND: [DonationeventModelFilter]
+  OR: [DonationEventModelFilter]
+  AND: [DonationEventModelFilter]
 }
 
-enum DonationeventModelOrderBy {
+enum DonationEventModelOrderBy {
   _createdAt_ASC
   _createdAt_DESC
   id_ASC
@@ -122,8 +122,8 @@ enum DonationeventModelOrderBy {
   donorName_DESC
 }
 
-"""Record of type DonationEvent (donationevent)"""
-type DonationeventRecord implements RecordInterface {
+"""Record of type DonationEvent (donation_event)"""
+type DonationEventRecord implements RecordInterface {
   _createdAt: DateTime!
 
   """Editing URL"""
@@ -148,7 +148,7 @@ type DonationeventRecord implements RecordInterface {
   id: ItemId!
 }
 
-input DonationitemModelFilter {
+input DonationItemModelFilter {
   _createdAt: CreatedAtFilter
   id: ItemIdFilter
   _firstPublishedAt: PublishedAtFilter
@@ -163,11 +163,11 @@ input DonationitemModelFilter {
   image: FileFilter
   personName: StringFilter
   title: StringFilter
-  OR: [DonationitemModelFilter]
-  AND: [DonationitemModelFilter]
+  OR: [DonationItemModelFilter]
+  AND: [DonationItemModelFilter]
 }
 
-enum DonationitemModelOrderBy {
+enum DonationItemModelOrderBy {
   _createdAt_ASC
   _createdAt_DESC
   id_ASC
@@ -192,8 +192,8 @@ enum DonationitemModelOrderBy {
   title_DESC
 }
 
-"""Record of type DonationItem (donationitem)"""
-type DonationitemRecord implements RecordInterface {
+"""Record of type DonationItem (donation_item)"""
+type DonationItemRecord implements RecordInterface {
   _createdAt: DateTime!
 
   """Editing URL"""
@@ -216,7 +216,7 @@ type DonationitemRecord implements RecordInterface {
     """Process content as markdown"""
     markdown: Boolean
   ): String
-  donation: DonationeventRecord
+  donation: DonationEventRecord
   id: ItemId!
   image: FileField
   personName: String
@@ -2731,17 +2731,17 @@ input PublishedAtFilter {
 """The query root for this schema"""
 type Query {
   """Returns meta information regarding a record collection"""
-  _allDonationeventsMeta(
+  _allDonationEventsMeta(
     """The locale to use to fetch the field's content"""
     locale: SiteLocale
-    filter: DonationeventModelFilter
+    filter: DonationEventModelFilter
   ): CollectionMetadata!
 
   """Returns meta information regarding a record collection"""
-  _allDonationitemsMeta(
+  _allDonationItemsMeta(
     """The locale to use to fetch the field's content"""
     locale: SiteLocale
-    filter: DonationitemModelFilter
+    filter: DonationItemModelFilter
   ): CollectionMetadata!
 
   """Returns meta information regarding an assets collection"""
@@ -2763,7 +2763,7 @@ type Query {
   ): Site!
 
   """Returns a collection of records"""
-  allDonationevents(
+  allDonationEvents(
     """The locale to use to fetch the field's content"""
     locale: SiteLocale
 
@@ -2777,12 +2777,12 @@ type Query {
 
     """Limit the number of results"""
     first: IntType = 20
-    filter: DonationeventModelFilter
-    orderBy: [DonationeventModelOrderBy] = [_updatedAt_DESC]
-  ): [DonationeventRecord!]!
+    filter: DonationEventModelFilter
+    orderBy: [DonationEventModelOrderBy] = [_updatedAt_DESC]
+  ): [DonationEventRecord!]!
 
   """Returns a collection of records"""
-  allDonationitems(
+  allDonationItems(
     """The locale to use to fetch the field's content"""
     locale: SiteLocale
 
@@ -2796,9 +2796,9 @@ type Query {
 
     """Limit the number of results"""
     first: IntType = 20
-    filter: DonationitemModelFilter
-    orderBy: [DonationitemModelOrderBy] = [_updatedAt_DESC]
-  ): [DonationitemRecord!]!
+    filter: DonationItemModelFilter
+    orderBy: [DonationItemModelOrderBy] = [_updatedAt_DESC]
+  ): [DonationItemRecord!]!
 
   """Returns a collection of assets"""
   allUploads(
@@ -2820,7 +2820,7 @@ type Query {
   ): [FileField!]!
 
   """Returns a specific record"""
-  donationevent(
+  donation_event(
     """The locale to use to fetch the field's content"""
     locale: SiteLocale
 
@@ -2828,12 +2828,12 @@ type Query {
     If you want to fallback to a default translation when a translation has not been found
     """
     fallbackLocales: [SiteLocale!]
-    filter: DonationeventModelFilter
-    orderBy: [DonationeventModelOrderBy] = [_updatedAt_DESC]
-  ): DonationeventRecord
+    filter: DonationEventModelFilter
+    orderBy: [DonationEventModelOrderBy] = [_updatedAt_DESC]
+  ): DonationEventRecord
 
   """Returns a specific record"""
-  donationitem(
+  donation_item(
     """The locale to use to fetch the field's content"""
     locale: SiteLocale
 
@@ -2841,9 +2841,9 @@ type Query {
     If you want to fallback to a default translation when a translation has not been found
     """
     fallbackLocales: [SiteLocale!]
-    filter: DonationitemModelFilter
-    orderBy: [DonationitemModelOrderBy] = [_updatedAt_DESC]
-  ): DonationitemRecord
+    filter: DonationItemModelFilter
+    orderBy: [DonationItemModelOrderBy] = [_updatedAt_DESC]
+  ): DonationItemRecord
 
   """Returns the single instance record"""
   page(

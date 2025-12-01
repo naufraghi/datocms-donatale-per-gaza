@@ -2,7 +2,7 @@ import { graphql } from 'gql.tada';
 
 export const AllDonationItemsQuery = graphql(`
   query AllDonationItems {
-    allDonationitems {
+    allDonationItems {
       id
       title
       personName
