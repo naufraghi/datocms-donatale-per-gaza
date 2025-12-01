@@ -5,6 +5,7 @@ This document outlines the plan for creating the Donatale website, a platform fo
 ## 1. Project Overview
 
 - **Project Name**: Donatale
+- **Project URL**: https://donatale-per-gaza.netlify.app/
 - **Objective**: Create a static website in Italian to showcase symbolic donation items (e.g., "a pullover for Mary"). The site will guide users on how to donate through external methods like PayPal, Satispay, or bank transfer, avoiding direct payment processing and fees.
 - **Key Technologies**:
   - **CMS**: DatoCMS (for managing content like families, people, and donation items).
