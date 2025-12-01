@@ -10,7 +10,14 @@ export const AllDonationItemsQuery = graphql(`
       image {
         url
       }
-      donated
+      donation { # Changed from donationEvent to donation
+        id
+        donatedBy
+        donorName
+        donorEmail
+      }
+      _status # Added
+      _firstPublishedAt # Added
     }
   }
 `);

@@ -1,0 +1,76 @@
+---
+// DonationModal/Component.astro
+interface Props {
+  // isOpen, onClose props are less relevant for native <dialog> with manual JS control
+  // but keeping for clarity/potential future Astro reactivity
+  isOpen?: boolean;
+  onClose?: () => void;
+  // Item data will be set dynamically via JS
+}
+---
+
+<dialog id="donation-modal" class="p-0 rounded-lg shadow-xl max-w-lg w-full">
+  <div class="relative bg-white p-6">
+    <button
+      id="modal-close-button"
+      class="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+      aria-label="Close modal"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <h2 id="modal-item-title" class="text-2xl font-bold mb-4"></h2>
+    <img id="modal-item-image" class="w-full h-48 object-cover rounded-md mb-4 hidden" alt="Immagine Donazione" />
+    <p id="modal-item-description" class="text-gray-700 mb-4"></p>
+
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+      <p class="font-semibold text-yellow-800">Codice Donazione Univoco:</p>
+      <p id="modal-donation-code" class="text-2xl font-bold text-yellow-900 break-all"></p>
+      <p class="text-sm text-yellow-700 mt-2">Ricorda di inserire questo codice nella causale/commento del pagamento.</p>
+    </div>
+
+    <div class="prose text-gray-800 mb-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">Istruzioni Generali per il Pagamento:</h3>
+      <p class="mb-1">Per completare la donazione, segui le istruzioni qui sotto.</p>
+      <p class="font-bold mb-2">È fondamentale includere il <span class="text-yellow-900">Codice Donazione Univoco</span> nella causale o nel commento del pagamento.</p>
+
+      <h4 class="text-md font-semibold text-blue-700">Tramite PayPal:</h4>
+      <p class="mb-1">Invia la tua donazione a <a href="https://www.paypal.me/donatale" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">paypal.me/donatale</a>. Assicurati di includere il Codice Donazione.</p>
+
+      <h4 class="text-md font-semibold text-purple-700">Tramite Satispay:</h4>
+      <p class="mb-1">Cerca <span class="font-semibold">@Donatale</span> nell'app Satispay e invia la donazione. Inserisci il Codice Donazione nel commento.</p>
+
+      <h4 class="text-md font-semibold text-green-700">Tramite Bonifico Bancario:</h4>
+      <p class="mb-1">IBAN: <code class="font-mono bg-gray-200 p-1 rounded text-sm">ITXX YYYY ZZZZ WWWW AAAA BBBB CCCC</code></p>
+      <p class="mb-1">Intestatario: Donatale APS</p>
+      <p class="mb-1">Causale: Donazione Donatale - [Il tuo nome] - [Codice Donazione]</p>
+    </div>
+
+    <h3 class="text-xl font-bold mb-3">Lascia i tuoi dati (Opzionale)</h3>
+    <form id="donation-form" class="space-y-4" method="POST">
+      <input type="hidden" name="itemId" id="form-item-id" />
+      <input type="hidden" name="donationCode" id="form-donation-code" />
+      <div>
+        <label for="donorName" class="block text-sm font-medium text-gray-700">Il tuo nome</label>
+        <input type="text" id="donorName" name="donorName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Mario Rossi" />
+      </div>
+      <div>
+        <label for="donorEmail" class="block text-sm font-medium text-gray-700">La tua email</label>
+        <input type="email" id="donorEmail" name="donorEmail" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="mario.rossi@example.com" />
+      </div>
+      <div>
+        <label for="donatedBy" class="block text-sm font-medium text-gray-700">Nome da visualizzare (se diverso)</label>
+        <input type="text" id="donatedBy" name="donatedBy" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Un Amico Generoso" />
+        <p class="mt-1 text-sm text-gray-500">Se lasciato vuoto, verrà usato il tuo nome.</p>
+      </div>
+      <button
+        type="submit"
+        class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Ho Donato (Conferma i miei dati)
+      </button>
+    </form>
+  </div>
+</dialog>

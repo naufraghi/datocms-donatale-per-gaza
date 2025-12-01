@@ -34,6 +34,14 @@ export default defineConfig({
         context: 'server',
         access: 'secret',
       }),
+      FORWARD_EMAIL_API_KEY: envField.string({
+        context: 'server',
+        access: 'secret',
+      }),
+      ADMIN_EMAIL: envField.string({
+        context: 'server',
+        access: 'secret',
+      }),
       DRAFT_MODE_COOKIE_NAME: envField.string({
         context: 'client',
         access: 'public',

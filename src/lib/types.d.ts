@@ -8,5 +8,12 @@ export interface DonationItem {
   image: {
     url: string;
   };
-  donated: boolean;
+  donation?: {
+    id: string;
+    donatedBy: string;
+    donorName: string;
+    donorEmail: string;
+  };
+  _status: string;
+  _firstPublishedAt: string;
 }

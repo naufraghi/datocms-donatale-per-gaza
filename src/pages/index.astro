@@ -5,6 +5,7 @@ import { isDraftModeEnabled } from '~/lib/draftMode';
 import { DraftModeQueryListener } from '~/components/DraftModeQueryListener';
 import { AllDonationItemsQuery } from '~/lib/datocms/queries/AllDonationItemsQuery';
 import DonationCard from '~/components/DonationCard/Component.astro';
+import DonationModal from '~/components/DonationModal/Component.astro'; // Import DonationModal
 import type { DonationItem } from '~/lib/types';
 
 const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
@@ -17,7 +18,7 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
 
 <Layout title="Donatale">
   <h1 class="text-4xl font-bold text-center my-8">Donazioni Disponibili</h1>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+  <div id="donation-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
     {
       typedAllDonationitems.length === 0 ? (
         <p class="col-span-full text-center text-lg">
@@ -29,4 +30,108 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
     }
   </div>
   <DraftModeQueryListener query={AllDonationItemsQuery} />
+
+  <DonationModal />
 </Layout>
+
+<script is:inline>
+  const donationModal = document.getElementById('donation-modal');
+  const donationCardsContainer = document.getElementById('donation-cards-container');
+  const donationForm = document.getElementById('donation-form');
+
+  if (donationCardsContainer && donationModal && donationForm) {
+    // Function to populate and show the modal
+    function showDonationModal(itemData) {
+      if (!donationModal) return;
+
+      // Populate modal content
+      document.getElementById('modal-item-title').textContent = itemData.title;
+      document.getElementById('modal-item-description').textContent = itemData.description;
+      document.getElementById('modal-donation-code').textContent = itemData.donationCode;
+      
+      const modalImage = document.getElementById('modal-item-image');
+      if (itemData.imageUrl && modalImage) {
+        modalImage.src = itemData.imageUrl;
+        modalImage.classList.remove('hidden');
+      } else if (modalImage) {
+        modalImage.classList.add('hidden');
+      }
+
+      // Populate hidden form fields
+      document.getElementById('form-item-id').value = itemData.id;
+      document.getElementById('form-donation-code').value = itemData.donationCode;
+
+      // Reset donor specific fields
+      document.getElementById('donorName').value = '';
+      document.getElementById('donorEmail').value = '';
+      document.getElementById('donatedBy').value = '';
+
+      donationModal.showModal();
+    }
+
+    // Event listener for opening the modal
+    donationCardsContainer.addEventListener('click', (event) => {
+      const targetButton = event.target.closest('button[data-item-id]');
+      if (targetButton && !targetButton.disabled) {
+        const itemData = {
+          id: targetButton.dataset.itemId || '',
+          title: targetButton.dataset.itemTitle || '',
+          personName: targetButton.dataset.itemPersonName || '', // Not used in modal but good to keep structure
+          description: targetButton.dataset.itemDescription || '',
+          imageUrl: targetButton.dataset.itemImageUrl || '',
+          donationCode: targetButton.dataset.donationCode || '',
+        };
+        showDonationModal(itemData);
+      }
+    });
+
+    // Handle form submission (will call backend API)
+    donationForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+
+      const donorName = String(formData.get('donorName'));
+      const donorEmail = String(formData.get('donorEmail'));
+      let donatedBy = String(formData.get('donatedBy'));
+      const itemId = String(formData.get('itemId'));
+      const donationCode = String(formData.get('donationCode'));
+
+
+      if (!donatedBy) {
+        donatedBy = donorName; // Default donatedBy to donorName if not provided
+      }
+
+      const submissionData = {
+        itemId: itemId,
+        donationCode: donationCode,
+        donorName: donorName,
+        donorEmail: donorEmail,
+        donatedBy: donatedBy,
+      };
+
+      console.log('Form submitted:', submissionData);
+
+      // Placeholder for backend API call (Task 5)
+      // const response = await fetch('/api/donate', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(submissionData),
+      // });
+      // const result = await response.json();
+      // console.log('API response:', result);
+
+      donationModal.close();
+      alert('Grazie per la tua donazione! Attendiamo la conferma.'); // Placeholder for actual feedback
+    });
+
+    // Close modal when clicking outside
+    donationModal.addEventListener('click', (event) => {
+      if (event.target === donationModal) {
+        donationModal.close();
+      }
+    });
+  }
+</script>

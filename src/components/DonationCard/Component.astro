@@ -6,9 +6,25 @@ interface Props {
 }
 
 const { item } = Astro.props;
+
+const donationCode = item.id.substring(0, 8).toUpperCase().replace(/(.{4})/, '$1-');
 ---
 
-<div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+<button
+  class:list={[
+    "bg-white rounded-lg shadow-md overflow-hidden flex flex-col text-left",
+    {"cursor-pointer hover:shadow-lg transition-shadow": !item.donation},
+    {"opacity-70 cursor-not-allowed": item.donation},
+  ]}
+  data-item-id={item.id}
+  data-donation-code={donationCode}
+  data-item-title={item.title}
+  data-item-person-name={item.personName}
+  data-item-description={item.description}
+  data-item-image-url={item.image?.url}
+  data-item-donated-by={item.donation?.donatedBy || ''}
+  disabled={!!item.donation}
+>
   {item.image && <img src={item.image.url} alt={item.title} class="w-full h-48 object-cover" />}
   <div class="p-4 flex-grow flex flex-col">
     <h2 class="text-xl font-semibold mb-2">{item.title}</h2>
@@ -16,9 +32,9 @@ const { item } = Astro.props;
     <p class="text-gray-800 mb-4 flex-grow">{item.description}</p>
     <div class="mt-auto">
       {
-        item.donated ? (
+        item.donation ? (
           <span class="inline-block bg-green-200 text-green-800 text-xs px-2 py-1 rounded-full">
-            Donato
+            Donato {item.donation?.donatedBy && `da ${item.donation.donatedBy}`}
           </span>
         ) : (
           <span class="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded-full">
@@ -28,4 +44,4 @@ const { item } = Astro.props;
       }
     </div>
   </div>
-</div>
+</button>
