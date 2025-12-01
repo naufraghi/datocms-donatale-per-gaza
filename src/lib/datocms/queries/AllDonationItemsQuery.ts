@@ -10,7 +10,8 @@ export const AllDonationItemsQuery = graphql(`
       image {
         url
       }
-      donation { # Changed from donationEvent to donation
+      donation {
+        # Changed from donationEvent to donation
         id
         donatedBy
         donorName

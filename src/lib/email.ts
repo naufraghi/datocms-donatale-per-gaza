@@ -17,11 +17,11 @@ export async function sendEmail(options: EmailOptions) {
     const response = await fetch('https://api.forwardemail.net/v1/send', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${FORWARD_EMAIL_API_KEY}`,
+        Authorization: `Bearer ${FORWARD_EMAIL_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: `"${options.from_name || "Donatale"}" <${SENDER_EMAIL}>`,
+        from: `"${options.from_name || 'Donatale'}" <${SENDER_EMAIL}>`,
         to: options.to,
         subject: options.subject,
         html: options.html,

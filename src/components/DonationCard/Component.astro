@@ -7,14 +7,17 @@ interface Props {
 
 const { item } = Astro.props;
 
-const donationCode = item.id.substring(0, 8).toUpperCase().replace(/(.{4})/, '$1-');
+const donationCode = item.id
+  .substring(0, 8)
+  .toUpperCase()
+  .replace(/(.{4})/, '$1-');
 ---
 
 <button
   class:list={[
-    "bg-white rounded-lg shadow-md overflow-hidden flex flex-col text-left",
-    {"cursor-pointer hover:shadow-lg transition-shadow": !item.donation},
-    {"opacity-70 cursor-not-allowed": item.donation},
+    'bg-white rounded-lg shadow-md overflow-hidden flex flex-col text-left',
+    { 'cursor-pointer hover:shadow-lg transition-shadow': !item.donation },
+    { 'opacity-70 cursor-not-allowed': item.donation },
   ]}
   data-item-id={item.id}
   data-donation-code={donationCode}

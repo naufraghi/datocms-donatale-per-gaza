@@ -25,7 +25,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Find DonationEvent model ID dynamically
     const itemTypes = await client.itemTypes.list();
-    const donationEventModel = itemTypes.find((type: any) => type.attributes.api_key === 'donation_event'); // Explicitly type 'type' as any temporarily
+    const donationEventModel = itemTypes.find(
+      (type: any) => type.attributes.api_key === 'donation_event',
+    ); // Explicitly type 'type' as any temporarily
 
     // 2. Create the DonationEvent
     const donationEvent = await client.items.create({
@@ -53,9 +55,19 @@ export const POST: APIRoute = async ({ request }) => {
     await sendDonorConfirmation(donorEmail, donorName, itemName, donationCode);
 
     // Send notification to admin
-    await sendAdminNotification(donationEvent.id, itemName, donorName, donorEmail, donatedBy, donationCode);
+    await sendAdminNotification(
+      donationEvent.id,
+      itemName,
+      donorName,
+      donorEmail,
+      donatedBy,
+      donationCode,
+    );
 
-    return successfulResponse({ message: 'Donation processed successfully', donationEventId: donationEvent.id });
+    return successfulResponse({
+      message: 'Donation processed successfully',
+      donationEventId: donationEvent.id,
+    });
   } catch (error) {
     return handleUnexpectedError(error);
   }

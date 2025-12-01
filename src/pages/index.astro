@@ -18,7 +18,10 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
 
 <Layout title="Donatale">
   <h1 class="text-4xl font-bold text-center my-8">Donazioni Disponibili</h1>
-  <div id="donation-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+  <div
+    id="donation-cards-container"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4"
+  >
     {
       typedAllDonationitems.length === 0 ? (
         <p class="col-span-full text-center text-lg">
@@ -48,7 +51,7 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
       document.getElementById('modal-item-title').textContent = itemData.title;
       document.getElementById('modal-item-description').textContent = itemData.description;
       document.getElementById('modal-donation-code').textContent = itemData.donationCode;
-      
+
       const modalImage = document.getElementById('modal-item-image');
       if (itemData.imageUrl && modalImage) {
         modalImage.src = itemData.imageUrl;
@@ -96,7 +99,6 @@ const typedAllDonationitems: DonationItem[] = allDonationitems as DonationItem[]
       let donatedBy = String(formData.get('donatedBy'));
       const itemId = String(formData.get('itemId'));
       const donationCode = String(formData.get('donationCode'));
-
 
       if (!donatedBy) {
         donatedBy = donorName; // Default donatedBy to donorName if not provided
