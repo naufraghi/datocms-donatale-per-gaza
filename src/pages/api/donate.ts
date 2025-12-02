@@ -23,7 +23,7 @@ export const POST: APIRoute = async ({ request }) => {
     // 1. Fetch the DonationItem to check its status and version for optimistic locking
     const item = (await client.items.find(itemId)) as any; // Cast item to any temporarily
 
-    if (item.attributes.donation) {
+    if (item.donation) {
       // Item is already donated, return an error
       return invalidRequestResponse('Donation item already donated or in progress', 409);
     }
@@ -31,17 +31,15 @@ export const POST: APIRoute = async ({ request }) => {
     // Find DonationEvent model ID dynamically
     const itemTypes = await client.itemTypes.list();
     const donationEventModel = itemTypes.find(
-      (type: any) => type.attributes.api_key === 'donation_event',
+      (type: any) => type.api_key === 'donation_event',
     ); // Explicitly type 'type' as any temporarily
 
     // 2. Create the DonationEvent
     const donationEvent = await client.items.create({
       item_type: { type: 'item_type', id: donationEventModel!.id }, // Added non-null assertion
-      name: `Donation for ${item.attributes.title} by ${donatedBy}`,
       donor_name: donorName,
       donor_email: donorEmail,
       donated_by: donatedBy,
-      donation: itemId, // Link to the DonationItem, assuming API ID is 'donation'
     });
 
     // 3. Update the DonationItem
@@ -54,7 +52,7 @@ export const POST: APIRoute = async ({ request }) => {
     // --- End transaction-like process ---
 
     // Send emails
-    const itemName = item.attributes.title as string;
+    const itemName = item.title as string;
 
     // Send confirmation to donor
     await sendDonorConfirmation(donorEmail, donorName, itemName, donationCode);

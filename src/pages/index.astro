@@ -60,7 +60,7 @@ const typedAllDonationItems: DonationItem[] = allDonationItems as DonationItem[]
       document.getElementById('modal-item-title').textContent = itemData.title;
       document.getElementById('modal-item-description').textContent = itemData.description;
       document.getElementById('modal-donation-code').textContent = itemData.donationCode;
-      
+
       const modalImage = document.getElementById('modal-item-image');
       if (itemData.imageUrl && modalImage instanceof HTMLImageElement) {
         modalImage.src = itemData.imageUrl;
@@ -149,7 +149,9 @@ const typedAllDonationItems: DonationItem[] = allDonationItems as DonationItem[]
         if (response.ok) {
           console.log('API response:', result);
           donationModal.close();
-          alert('Grazie per la tua donazione! Abbiamo registrato la tua intenzione e riceverai presto una email di conferma.');
+          alert(
+            'Grazie per la tua donazione! Abbiamo registrato la tua intenzione e riceverai presto una email di conferma.',
+          );
           window.location.reload();
         } else {
           console.error('API error:', result);

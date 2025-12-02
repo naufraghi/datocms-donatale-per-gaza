@@ -2820,7 +2820,7 @@ type Query {
   ): [FileField!]!
 
   """Returns a specific record"""
-  donation_event(
+  donationEvent(
     """The locale to use to fetch the field's content"""
     locale: SiteLocale
 
@@ -2833,7 +2833,7 @@ type Query {
   ): DonationEventRecord
 
   """Returns a specific record"""
-  donation_item(
+  donationItem(
     """The locale to use to fetch the field's content"""
     locale: SiteLocale
 

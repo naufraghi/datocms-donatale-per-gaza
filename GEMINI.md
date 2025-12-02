@@ -31,4 +31,4 @@ This document outlines the plan for creating the Donatale website, a platform fo
 
 - Use the provided tooling to update the schema.
 - Use build and check to validate developement steps.
-- Ask me to check if the dev server is working.
+- Ask me to check if the dev server is working, if it is, commit the state.
