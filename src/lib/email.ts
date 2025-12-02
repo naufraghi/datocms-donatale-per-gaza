@@ -11,12 +11,7 @@ interface EmailOptions {
 }
 
 export async function sendEmail(options: EmailOptions) {
-  const DEPLOY_SENDER_HOSTNAME = new URL(import.meta.env.SITE || 'http://localhost').hostname;
-  const DEPLOY_SENDER_EMAIL = `no-reply@${DEPLOY_SENDER_HOSTNAME}`;
-  const LOCAL_SENDER_EMAIL = "matteo+donatale@naufraghi.net";
-
-  // Use LOCAL_SENDER_EMAIL if running locally (SITE is not defined)
-  const actualSenderEmail = import.meta.env.SITE ? DEPLOY_SENDER_EMAIL : LOCAL_SENDER_EMAIL;
+  const SENDER_EMAIL = 'matteo+donatale@naufraghi.net';
 
   try {
     const response = await fetch('https://api.forwardemail.net/v1/emails', {
@@ -26,7 +21,7 @@ export async function sendEmail(options: EmailOptions) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: `"${options.from_name || 'Donatale'}" <${actualSenderEmail}>`,
+        from: `"${options.from_name || 'Donatale'}" <${SENDER_EMAIL}>`,
         to: options.to,
         subject: options.subject,
         html: options.html,
