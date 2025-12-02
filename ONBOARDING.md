@@ -18,7 +18,6 @@ This is a static website built with [Astro](https://astro.build/), a modern fron
 The project follows a standard Astro project structure. Here are the most important directories and files:
 
 - **/src**: This is where all the source code for the website lives.
-
   - **/src/components**: Contains reusable Astro components (e.g., `Header`, `Footer`, `DonationCard`).
   - **/src/layouts**: Defines the main layout structure for pages. `Layout.astro` is the primary layout file.
   - **/src/lib**: Holds various helper functions, type definitions, and the DatoCMS client configuration.

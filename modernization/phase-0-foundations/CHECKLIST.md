@@ -134,7 +134,6 @@ If any task causes issues:
    ```
 
 2. **CI pipeline issues**
-
    - Check workflow syntax
    - Verify environment variables in GitHub Actions
    - Review Node.js version compatibility

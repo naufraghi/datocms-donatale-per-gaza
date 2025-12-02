@@ -119,12 +119,10 @@ npm run dev
 ### Common Issues
 
 1. **"Invalid API token" error**
-
    - Verify DatoCMS tokens are correct
    - Check token permissions (CDA vs CMA)
 
 2. **"JWT secret not set" error**
-
    - Ensure `SIGNED_COOKIE_JWT_SECRET` is set
    - Generate a new secret if needed
 

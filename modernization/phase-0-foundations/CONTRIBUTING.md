@@ -66,13 +66,11 @@ git checkout -b feature/your-feature-name
 ### Making Changes
 
 1. **Code Style**
-
    - Follow the existing code style
    - Use TypeScript for all new code
    - Add comments for complex logic
 
 2. **Testing**
-
    - Add tests for new functionality
    - Ensure existing tests pass
    - Test manually in the browser
@@ -87,7 +85,6 @@ git checkout -b feature/your-feature-name
 ### Pull Request Process
 
 1. **Update Documentation**
-
    - Update README if needed
    - Add inline comments for complex changes
 
