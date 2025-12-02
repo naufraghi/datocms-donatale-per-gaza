@@ -30,9 +30,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Find DonationEvent model ID dynamically
     const itemTypes = await client.itemTypes.list();
-    const donationEventModel = itemTypes.find(
-      (type: any) => type.api_key === 'donation_event',
-    ); // Explicitly type 'type' as any temporarily
+    const donationEventModel = itemTypes.find((type: any) => type.api_key === 'donation_event'); // Explicitly type 'type' as any temporarily
 
     // 2. Create the DonationEvent
     const donationEvent = await client.items.create({
