@@ -1,6 +1,6 @@
-# Contributing to Donatale
+# Contributing to Donatale per Gaza
 
-Thank you for your interest in contributing to Donatale! This document provides
+Thank you for your interest in contributing to Donatale per Gaza! This document provides
 guidelines and information for contributors.
 
 ## Getting Started
@@ -13,34 +13,41 @@ guidelines and information for contributors.
 
 ### Setup
 
-1. **Fork the repository**
+1. **Fork repository**
 
    ```bash
-   # Click the "Fork" button on GitHub, then clone your fork
-   git clone https://github.com/your-username/donatale-app.git
-   cd donatale-app
+   # Fork the repository at: https://github.com/naufraghi/datocms-donatale-per-gaza
+   # Then clone your fork
+   git clone https://github.com/your-username/datocms-donatale-per-gaza.git
+   cd datocms-donatale-per-gaza
    ```
 
-2. **Install dependencies**
+2. **Add upstream remote**
+
+   ```bash
+   git remote add upstream https://github.com/naufraghi/datocms-donatale-per-gaza.git
+   ```
+
+3. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-3. **Set up environment variables**
+4. **Set up environment variables**
 
    ```bash
    cp .env.example .env
    # Edit .env with your DatoCMS tokens and other secrets
    ```
 
-4. **Start the development server**
+5. **Start the development server**
 
    ```bash
    npm run dev
    ```
 
-5. **Verify the setup**
+6. **Verify setup**
    - Open http://localhost:4321
    - Ensure the page loads without errors
 
@@ -59,8 +66,18 @@ guidelines and information for contributors.
 ```bash
 # From develop branch
 git checkout develop
-git pull origin develop
+git pull upstream develop
 git checkout -b feature/your-feature-name
+```
+
+### Syncing with Upstream
+
+```bash
+# Keep your fork up-to-date with upstream
+git checkout main
+git pull upstream main
+git checkout develop
+git pull upstream develop
 ```
 
 ### Making Changes
@@ -164,9 +181,28 @@ Brief description of the changes
 
 ## Getting Help
 
-- **Issues**: Open an issue for bugs or feature requests
-- **Discussions**: Use GitHub Discussions for questions
-- **Maintainers**: Tag maintainers in PRs for review
+- **Issues**: Open an issue for bugs or feature requests at [naufraghi/datocms-donatale-per-gaza/issues](https://github.com/naufraghi/datocms-donatale-per-gaza/issues)
+- **Discussions**: Use GitHub Discussions for questions at [naufraghi/datocms-donatale-per-gaza/discussions](https://github.com/naufraghi/datocms-donatale-per-gaza/discussions)
+- **Maintainers**: Tag @naufraghi in PRs for review
+
+## Project-Specific Guidelines
+
+### Donatale per Gaza Context
+
+This is a donation platform for families in need. When contributing:
+
+- Keep the user interface simple and accessible
+- Ensure all text is in Italian as specified in requirements
+- Test donation flow thoroughly
+- Consider mobile-first design for accessibility
+- Be mindful of the sensitive nature of donation processing
+
+### Content Management
+
+- All content is managed through DatoCMS
+- Do not hardcode donation items or family information
+- Use GraphQL queries to fetch dynamic content
+- Test with both draft and published content modes
 
 ## Release Process
 
@@ -175,6 +211,15 @@ Releases are managed by project maintainers:
 1. Update version in package.json
 2. Update CHANGELOG.md
 3. Create git tag
-4. Deploy to production
+4. Deploy to Netlify production
 
-Thank you for contributing to Donatale! 🎉
+Thank you for contributing to Donatale per Gaza! 🎉
+
+---
+
+## Project Links
+
+- **Repository**: https://github.com/naufraghi/datocms-donatale-per-gaza
+- **Live Site**: https://donatale-per-gaza.netlify.app/
+- **Issues**: https://github.com/naufraghi/datocms-donatale-per-gaza/issues
+- **Discussions**: https://github.com/naufraghi/datocms-donatale-per-gaza/discussions
