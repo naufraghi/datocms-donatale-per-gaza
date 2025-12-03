@@ -43,6 +43,7 @@ jobs:
           SIGNED_COOKIE_JWT_SECRET: dummy_jwt_secret
           FORWARD_EMAIL_API_KEY: dummy_email_key
           ADMIN_EMAIL: dummy@example.com
+          DRAFT_MODE_COOKIE_NAME: __draftMode
 
       - name: Run tests
         run: npm test
