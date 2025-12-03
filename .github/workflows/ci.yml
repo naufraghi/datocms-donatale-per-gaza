@@ -37,13 +37,11 @@ jobs:
         env:
           # Provide dummy values for required env vars in build
           DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN: dummy_token
-          DATOCMS_DRAFT_CONTENT_CDA_TOKEN: dummy_token
           DATOCMS_CMA_TOKEN: dummy_token
           SECRET_API_TOKEN: dummy_secret
           SIGNED_COOKIE_JWT_SECRET: dummy_jwt_secret
           FORWARD_EMAIL_API_KEY: dummy_email_key
           ADMIN_EMAIL: dummy@example.com
-          DRAFT_MODE_COOKIE_NAME: __draftMode
 
       - name: Run tests
         run: npm test
