@@ -9,8 +9,8 @@ interface Props {
 }
 ---
 
-<dialog 
-  id="donation-modal" 
+<dialog
+  id="donation-modal"
   class="p-0 rounded-lg shadow-xl max-w-lg w-full"
   role="dialog"
   aria-modal="true"
@@ -51,7 +51,13 @@ interface Props {
 
     <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
       <p class="font-semibold text-yellow-800">Codice Donazione Univoco:</p>
- <p id="modal-donation-code" class="text-2xl font-bold text-yellow-900 break-all" role="status" aria-live="polite"></p>
+      <p
+        id="modal-donation-code"
+        class="text-2xl font-bold text-yellow-900 break-all"
+        role="status"
+        aria-live="polite"
+      >
+      </p>
       <p class="text-sm text-yellow-700 mt-2">
         Ricorda di inserire questo codice nella causale/commento del pagamento.
       </p>
@@ -98,7 +104,9 @@ interface Props {
       <input type="hidden" name="itemId" id="form-item-id" />
       <input type="hidden" name="donationCode" id="form-donation-code" />
       <div>
-        <label for="donorName" class="block text-sm font-medium text-gray-700" id="donor-name-label">Il tuo nome</label>
+        <label for="donorName" class="block text-sm font-medium text-gray-700" id="donor-name-label"
+          >Il tuo nome</label
+        >
         <input
           type="text"
           id="donorName"
@@ -111,7 +119,11 @@ interface Props {
         />
       </div>
       <div>
-        <label for="donorEmail" class="block text-sm font-medium text-gray-700" id="donor-email-label">La tua email</label>
+        <label
+          for="donorEmail"
+          class="block text-sm font-medium text-gray-700"
+          id="donor-email-label">La tua email</label
+        >
         <input
           type="email"
           id="donorEmail"
@@ -137,7 +149,9 @@ interface Props {
           aria-required="false"
           autocomplete="nickname"
         />
-        <p class="mt-1 text-sm text-gray-500" id="donated-by-help">Se lasciato vuoto, verrà usato il tuo nome.</p>
+        <p class="mt-1 text-sm text-gray-500" id="donated-by-help">
+          Se lasciato vuoto, verrà usato il tuo nome.
+        </p>
       </div>
       <button
         type="submit"
