@@ -8,7 +8,34 @@ import type { DonationItem } from '~/lib/types';
 
 const { allDonationItems } = await executeQuery(AllDonationItemsQuery);
 
-const typedAllDonationItems: DonationItem[] = allDonationItems as DonationItem[];
+// Type guard to ensure GraphQL data matches expected DonationItem structure
+function isDonationItem(item: unknown): item is DonationItem {
+  return (
+    typeof item === 'object' &&
+    item !== null &&
+    'id' in item &&
+    'title' in item &&
+    'personName' in item &&
+    'description' in item &&
+    'image' in item &&
+    typeof (item as any).id === 'string' &&
+    typeof (item as any).title === 'string' &&
+    typeof (item as any).personName === 'string' &&
+    typeof (item as any).description === 'string' &&
+    typeof (item as any).image === 'object' &&
+    (item as any).image !== null &&
+    'url' in (item as any).image &&
+    typeof (item as any).image.url === 'string'
+  );
+}
+
+function isDonationItemArray(data: unknown): data is DonationItem[] {
+  return Array.isArray(data) && data.every(isDonationItem);
+}
+
+const typedAllDonationItems: DonationItem[] = isDonationItemArray(allDonationItems) 
+  ? allDonationItems 
+  : [];
 ---
 
 <Layout title="Donatale">
@@ -33,7 +60,7 @@ const typedAllDonationItems: DonationItem[] = allDonationItems as DonationItem[]
 
 <script>
   import { initDonationModal } from '../scripts/donation-modal.ts';
-  
+
   // Initialize the donation modal when DOM is ready
   document.addEventListener('DOMContentLoaded', () => {
     initDonationModal();
