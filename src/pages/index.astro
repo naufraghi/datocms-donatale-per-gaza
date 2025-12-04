@@ -1,17 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { executeQuery } from '~/lib/datocms/executeQuery';
-import { isDraftModeEnabled } from '~/lib/draftMode';
-import { DraftModeQueryListener } from '~/components/DraftModeQueryListener';
 import { AllDonationItemsQuery } from '~/lib/datocms/queries/AllDonationItemsQuery';
 import DonationCard from '~/components/DonationCard/Component.astro';
 import DonationModal from '~/components/DonationModal/Component.astro'; // Import DonationModal
 import type { DonationItem } from '~/lib/types';
 
-const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
-const { allDonationItems } = await executeQuery(AllDonationItemsQuery, {
-  includeDrafts: draftModeEnabled,
-});
+const { allDonationItems } = await executeQuery(AllDonationItemsQuery);
 
 const typedAllDonationItems: DonationItem[] = allDonationItems as DonationItem[];
 ---
@@ -32,7 +27,6 @@ const typedAllDonationItems: DonationItem[] = allDonationItems as DonationItem[]
       )
     }
   </div>
-  <DraftModeQueryListener query={AllDonationItemsQuery} />
 
   <DonationModal />
 </Layout>

@@ -16,7 +16,7 @@ This project aims to be a great starting point for your Astro projects that need
 - 💯 **100% TypeScript** — Thanks to [gql.tada](https://gql-tada.0no.co/) every GraphQL query is fully typed, and your IDE will help you complete the GraphQL queries.
 - 🛠️ **Minimal boilerplate** — The project is minimal and exposes only what is necessary to get started, without complicated models that need to be removed.
 - 🚫 **Zero CSS** — There is only one CSS import, which you can remove to use your preferred CSS tool.
-- 📝 **Full support for Draft Mode** — Your editors can always view the latest draft version of the content.
+
 - 🧩 **Plugin ready** — Support for the fantastic plugins [Web Previews](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-web-previews) and [SEO/Readability Analysis](https://www.datocms.com/marketplace/plugins/i/datocms-plugin-seo-readability-analysis).
 - 🔄 **DatoCMS's Real-time Updates API** — Your editors can see updated content instantly as soon as you save a new version on DatoCMS.
 - 🌐 **SEO Metadata** — Full integration between Astro and the SEO settings coming from DatoCMS.
@@ -50,13 +50,12 @@ In your DatoCMS' project, go to the **Settings** menu at the top and click **API
 Copy the values of the following tokens into the specified environment variable:
 
 - `DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN`: CDA Only (Published)
-- `DATOCMS_DRAFT_CONTENT_CDA_TOKEN`: CDA Only (Draft)
 - `DATOCMS_CMA_TOKEN`: CMA Only (Admin)
 
 Then set both `SECRET_API_TOKEN` and `SIGNED_COOKIE_JWT_SECRET` by generating two different secure strings (you can use `openssl rand -hex 32` or any other cryptographically-secure random string generator):
 
 - The `SECRET_API_TOKEN` will be used to safeguard all API routes from incoming requests from untrusted sources;
-- The `SIGNED_COOKIE_JWT_SECRET` will be used to sign the Draft Mode cookies.
+- The `SIGNED_COOKIE_JWT_SECRET` will be used for API operations.
 
 #### Run your project locally
 

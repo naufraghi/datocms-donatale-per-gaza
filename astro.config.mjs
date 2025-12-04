@@ -18,10 +18,7 @@ export default defineConfig({
         context: 'server',
         access: 'secret',
       }),
-      DATOCMS_DRAFT_CONTENT_CDA_TOKEN: envField.string({
-        context: 'server',
-        access: 'secret',
-      }),
+
       DATOCMS_CMA_TOKEN: envField.string({
         context: 'server',
         access: 'secret',
@@ -41,10 +38,6 @@ export default defineConfig({
       ADMIN_EMAIL: envField.string({
         context: 'server',
         access: 'secret',
-      }),
-      DRAFT_MODE_COOKIE_NAME: envField.string({
-        context: 'client',
-        access: 'public',
       }),
     },
     validateSecrets: true,
