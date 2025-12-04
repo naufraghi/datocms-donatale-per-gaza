@@ -30,6 +30,7 @@ export class DonationModal {
   private form: HTMLFormElement | null = null;
   private closeButton: HTMLButtonElement | null = null;
   private cardsContainer: HTMLElement | null = null;
+  private previousFocusElement: HTMLElement | null = null;
 
   constructor() {
     this.init();
@@ -71,6 +72,8 @@ export class DonationModal {
     // Close modal when clicking outside (native <dialog> behavior)
     if (this.modal) {
       this.modal.addEventListener('click', this.handleOutsideClick.bind(this));
+      // Listen for close event to restore focus
+      this.modal.addEventListener('close', this.handleModalClose.bind(this));
     }
   }
 
@@ -101,6 +104,17 @@ export class DonationModal {
   private handleCloseClick(): void {
     if (this.modal) {
       this.modal.close();
+    }
+  }
+
+  /**
+   * Handle modal close event and restore focus
+   */
+  private handleModalClose(): void {
+    // Restore focus to the element that opened the modal
+    if (this.previousFocusElement) {
+      this.previousFocusElement.focus();
+      this.previousFocusElement = null;
     }
   }
 
@@ -237,13 +251,24 @@ export class DonationModal {
   }
 
   /**
-   * Show the modal with item data
+   * Show modal with item data
    */
   public showModal(itemData: DonationItemData): void {
     if (!this.modal) return;
 
     this.populateModal(itemData);
+
+    // Store the element that opened the modal for focus restoration
+    this.previousFocusElement = document.activeElement as HTMLElement;
+
     this.modal.showModal();
+
+    // Set focus to the close button for better accessibility
+    setTimeout(() => {
+      if (this.closeButton) {
+        this.closeButton.focus();
+      }
+    }, 100);
   }
 
   /**

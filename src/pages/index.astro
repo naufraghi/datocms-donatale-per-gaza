@@ -33,8 +33,8 @@ function isDonationItemArray(data: unknown): data is DonationItem[] {
   return Array.isArray(data) && data.every(isDonationItem);
 }
 
-const typedAllDonationItems: DonationItem[] = isDonationItemArray(allDonationItems) 
-  ? allDonationItems 
+const typedAllDonationItems: DonationItem[] = isDonationItemArray(allDonationItems)
+  ? allDonationItems
   : [];
 ---
 
