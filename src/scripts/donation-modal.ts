@@ -26,31 +26,11 @@ export interface ApiResponse {
 }
 
 export class DonationModal {
-  private modal: HTMLDialogElement | null = null;
+  private modalManager: any = null;
   private form: HTMLFormElement | null = null;
-  private closeButton: HTMLButtonElement | null = null;
   private cardsContainer: HTMLElement | null = null;
-  private previousFocusElement: HTMLElement | null = null;
 
   constructor() {
-    this.init();
-  }
-
-  /**
-   * Initialize the donation modal by finding DOM elements and setting up event listeners
-   */
-  private init(): void {
-    // Find DOM elements
-    this.modal = document.getElementById('donation-modal') as HTMLDialogElement | null;
-    this.form = document.getElementById('donation-form') as HTMLFormElement | null;
-    this.closeButton = document.getElementById('modal-close-button') as HTMLButtonElement | null;
-    this.cardsContainer = document.getElementById('donation-cards-container') as HTMLElement | null;
-
-    if (!this.modal || !this.form || !this.closeButton || !this.cardsContainer) {
-      console.warn('Donation modal: Required DOM elements not found');
-      return;
-    }
-
     this.setupEventListeners();
   }
 
@@ -58,23 +38,30 @@ export class DonationModal {
    * Set up all event listeners for the modal
    */
   private setupEventListeners(): void {
-    if (!this.cardsContainer || !this.closeButton || !this.form) return;
+    // Find DOM elements
+    this.form = document.getElementById('donation-form') as HTMLFormElement | null;
+    this.cardsContainer = document.getElementById('donation-cards-container') as HTMLElement | null;
+
+    if (!this.form || !this.cardsContainer) {
+      console.warn('Donation modal: Required DOM elements not found');
+      return;
+    }
+
+    // Initialize the ModalManager
+    if (typeof window !== 'undefined' && (window as any).ModalManager) {
+      this.modalManager = new (window as any).ModalManager({
+        modalId: 'donation-modal',
+        onClose: () => {
+          // Handle modal close if needed
+        },
+      });
+    }
 
     // Event listener for opening the modal when clicking donation cards
     this.cardsContainer.addEventListener('click', this.handleCardClick.bind(this));
 
-    // Event listener for closing the modal with the close button
-    this.closeButton.addEventListener('click', this.handleCloseClick.bind(this));
-
     // Event listener for form submission
     this.form.addEventListener('submit', this.handleFormSubmit.bind(this));
-
-    // Close modal when clicking outside (native <dialog> behavior)
-    if (this.modal) {
-      this.modal.addEventListener('click', this.handleOutsideClick.bind(this));
-      // Listen for close event to restore focus
-      this.modal.addEventListener('close', this.handleModalClose.bind(this));
-    }
   }
 
   /**
@@ -96,35 +83,6 @@ export class DonationModal {
     };
 
     this.showModal(itemData);
-  }
-
-  /**
-   * Handle close button clicks
-   */
-  private handleCloseClick(): void {
-    if (this.modal) {
-      this.modal.close();
-    }
-  }
-
-  /**
-   * Handle modal close event and restore focus
-   */
-  private handleModalClose(): void {
-    // Restore focus to the element that opened the modal
-    if (this.previousFocusElement) {
-      this.previousFocusElement.focus();
-      this.previousFocusElement = null;
-    }
-  }
-
-  /**
-   * Handle clicks outside the modal
-   */
-  private handleOutsideClick(event: Event): void {
-    if (event.target === this.modal && this.modal) {
-      this.modal.close();
-    }
   }
 
   /**
@@ -228,8 +186,8 @@ export class DonationModal {
   private handleSuccess(result: ApiResponse): void {
     console.log('API response:', result);
 
-    if (this.modal) {
-      this.modal.close();
+    if (this.modalManager) {
+      this.modalManager.close();
     }
 
     this.showSuccess(
@@ -254,29 +212,19 @@ export class DonationModal {
    * Show modal with item data
    */
   public showModal(itemData: DonationItemData): void {
-    if (!this.modal) return;
+    if (!this.modalManager) return;
 
     this.populateModal(itemData);
 
-    // Store the element that opened the modal for focus restoration
-    this.previousFocusElement = document.activeElement as HTMLElement;
-
-    this.modal.showModal();
-
-    // Set focus to the close button for better accessibility
-    setTimeout(() => {
-      if (this.closeButton) {
-        this.closeButton.focus();
-      }
-    }, 100);
+    this.modalManager.show();
   }
 
   /**
    * Populate modal content with item data
    */
   private populateModal(itemData: DonationItemData): void {
-    // Set text content
-    const titleElement = document.getElementById('modal-item-title');
+    // Set text content - update to modal title in the Modal component
+    const titleElement = document.querySelector('#donation-modal [role="heading"]');
     const descriptionElement = document.getElementById('modal-item-description');
     const codeElement = document.getElementById('modal-donation-code');
 
