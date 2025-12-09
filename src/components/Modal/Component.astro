@@ -1,0 +1,149 @@
+---
+interface Props {
+  title: string;
+  isOpen?: boolean;
+  onClose?: () => void;
+  class?: string;
+  id?: string;
+}
+
+const { title, isOpen = false, onClose, class: className = '', id = 'modal' } = Astro.props;
+
+// Generate unique IDs for accessibility
+const modalId = id;
+const titleId = `${modalId}-title`;
+const descriptionId = `${modalId}-description`;
+---
+
+<dialog
+  id={modalId}
+  class={`p-0 rounded-lg shadow-xl max-w-lg w-full ${className}`}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={titleId}
+  aria-describedby={descriptionId}
+  open={isOpen}
+>
+  <div class="relative bg-white p-6">
+    <button
+      type="button"
+      class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
+      aria-label="Chiudi finestra di dialogo"
+      aria-describedby={titleId}
+      data-modal-close
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <h2 id={titleId} class="text-2xl font-bold mb-4" role="heading" aria-level="2">
+      {title}
+    </h2>
+
+    <div id={descriptionId} class="text-gray-700">
+      <slot />
+    </div>
+  </div>
+</dialog>
+
+<script is:inline>
+  class ModalManager {
+    modal = null;
+    previousFocusElement = null;
+    onClose = null;
+
+    constructor({ modalId, onClose }) {
+      this.modal = document.getElementById(modalId);
+      this.onClose = onClose;
+      this.init();
+    }
+
+    init() {
+      if (!this.modal) {
+        console.warn(`Modal with id ${modalId} not found`);
+        return;
+      }
+
+      // Close modal when clicking outside
+      this.modal.addEventListener('click', (event) => {
+        if (event.target === this.modal) {
+          this.close();
+        }
+      });
+
+      // Handle close event to restore focus
+      this.modal.addEventListener('close', () => {
+        this.handleClose();
+      });
+
+      // Handle escape key
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && this.modal?.open) {
+          this.close();
+        }
+      });
+
+      // Handle close button click
+      const closeButton = this.modal.querySelector('[data-modal-close]');
+      if (closeButton) {
+        closeButton.addEventListener('click', () => {
+          this.close();
+        });
+      }
+    }
+
+    show() {
+      if (!this.modal) return;
+
+      // Store element that opened the modal for focus restoration
+      this.previousFocusElement = document.activeElement;
+
+      this.modal.showModal();
+
+      // Set focus to the close button for better accessibility
+      setTimeout(() => {
+        const closeButton = this.modal?.querySelector('button[aria-label*="Chiudi"]');
+        if (closeButton) {
+          closeButton.focus();
+        }
+      }, 100);
+    }
+
+    close() {
+      if (!this.modal) return;
+      this.modal.close();
+    }
+
+    handleClose() {
+      // Restore focus to the element that opened the modal
+      if (this.previousFocusElement) {
+        this.previousFocusElement.focus();
+        this.previousFocusElement = null;
+      }
+
+      // Call the onClose callback if provided
+      if (this.onClose) {
+        this.onClose();
+      }
+    }
+
+    isOpen() {
+      return this.modal?.open || false;
+    }
+  }
+
+  // Export for use in other scripts
+  window.ModalManager = ModalManager;
+</script>
